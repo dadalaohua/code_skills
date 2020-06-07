@@ -155,6 +155,8 @@ void task_timer(void)
         set_bit(XTASK_GROUP_100MS, &task_run_flag);
     if (counter % 500 == 0)
         set_bit(XTASK_GROUP_500MS, &task_run_flag);
+    if (counter % 1000 == 0)
+        set_bit(XTASK_GROUP_1S, &task_run_flag);
 }
 
 int task_free(task_t *t)
