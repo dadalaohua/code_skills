@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
     for(i = 0; i < 10; i++)                             /*显示原序列之中的元素*/
         printf("%d ",buf[i]);
         
-    selectsort_inc(buf, sizeof(buf)/sizeof(int));       /*插入排序*/
+    selectsort_inc(buf, sizeof(buf)/sizeof(int));       /*选择排序*/
     
     printf("\nThe result of selection sorting for the array is\n");
     for(i = 0; i < 10; i++)
@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
     
     printf("\n"); 
     
-    selectsort_dec(buf, sizeof(buf)/sizeof(int));       /*插入排序*/
+    selectsort_dec(buf, sizeof(buf)/sizeof(int));       /*选择排序*/
     
     printf("\nThe result of selection sorting for the array is\n");
     for(i = 0; i < 10; i++)
