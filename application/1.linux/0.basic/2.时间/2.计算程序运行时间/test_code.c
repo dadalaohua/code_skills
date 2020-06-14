@@ -17,13 +17,13 @@ int main(int argc, char* argv[])
 
     gettimeofday(&tv_end,NULL);
 
-    printf("tv_begin_sec:%d\n", tv_begin.tv_sec);
-    printf("tv_begin_usec:%d\n", tv_begin.tv_usec);
+    printf("tv_begin_sec:%ld\n", tv_begin.tv_sec);
+    printf("tv_begin_usec:%ld\n", tv_begin.tv_usec);
 
-    printf("tv_end_sec:%d\n", tv_end.tv_sec);
-    printf("tv_end_usec:%d\n", tv_end.tv_usec);
+    printf("tv_end_sec:%ld\n", tv_end.tv_sec);
+    printf("tv_end_usec:%ld\n", tv_end.tv_usec);
     
-    printf("run_time:%ds %dus\n", (tv_end.tv_sec - tv_begin.tv_sec), (tv_end.tv_usec - tv_begin.tv_usec));
+    printf("run_time:%lds %ldus\n", (tv_end.tv_sec - tv_begin.tv_sec), (tv_end.tv_usec - tv_begin.tv_usec));
 
     return 0;
 }

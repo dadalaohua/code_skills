@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include <signal.h>
 #include <time.h>
@@ -10,7 +11,7 @@ void handle(union sigval v)
     
     time(&t);
     strftime(p, sizeof(p), "%T", localtime(&t));
-    printf("%s thread %lu, val = %d, signal captured.\n", p, pthread_self(), v.sival_int);
+    printf("%s thread %lu, val = %d, signal captured.\n", p, (unsigned long)pthread_self(), v.sival_int);
     return;
 }
 

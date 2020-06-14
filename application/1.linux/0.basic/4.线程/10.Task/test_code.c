@@ -1,7 +1,8 @@
-#include <stdio.h>  
-#include <pthread.h>  
+#include <stdio.h>
+#include <string.h>
+#include <pthread.h>
 #include <sys/syscall.h>
-#include "assert.h" 
+#include "assert.h"
 
 #define OS_THREAD_TOTAL 10
 #define OS_OBJECT_NAME  10
