@@ -1,5 +1,4 @@
 #include "mem_malloc.h"
-#include <string.h>
 
 /************************************************************************/
 /*                                                                      */
@@ -80,6 +79,76 @@ int mem_malloc(unsigned int msize){
 
 }
 
+
+int mem_realloc(int id, unsigned int msize)
+{
+    int i, j;
+    
+    for(i = 0; i<sum; i++){
+        mem_block *ptr_blk = (mem_block *)(MEM_START + BLK_SIZE*i);
+        if(id == ptr_blk->mem_index){
+            int free_blk = (char *)ptr_blk->mem_ptr-(MEM_START + BLK_SIZE*sum);
+            int old_size = ptr_blk->mem_size;
+            int offset = msize - old_size;
+            int move_size = 0; 
+            int n = sum - i;
+            mem_block *ptr_tmp;
+            if(offset == 0){
+                return 0;
+            }else if(offset < 0){
+                offset = old_size - msize;
+                for(j=1; j<n; j++){
+                    ptr_tmp = (mem_block *)(MEM_START + BLK_SIZE*(i+j));
+                    move_size += ptr_tmp->mem_size;
+                }
+                if(n == 1){
+                    ptr_tmp = (mem_block *)(MEM_START + BLK_SIZE*i);
+                }
+                move_size += msize;
+                char *dst_addr = ptr_tmp->mem_ptr + move_size + offset - 1;
+                char *src_addr = ptr_tmp->mem_ptr + move_size - 1;
+                for(j=move_size; j>0; j--){
+                    *dst_addr-- = *src_addr--;
+                }
+                memset(src_addr, 0, offset+1);
+                for(j=0; j<n; j++){
+                    ptr_tmp = (mem_block *)(MEM_START + BLK_SIZE*(i+j));
+                    ptr_tmp->mem_ptr += offset;
+                    if(j == 0){
+                        ptr_tmp->mem_size = msize;
+                    }
+                }
+                return 1;
+            }else{
+                if(offset <= free_blk){
+                    for(j=1; j<n; j++){
+                        ptr_tmp = (mem_block *)(MEM_START + BLK_SIZE*(i+j));
+                        move_size += ptr_tmp->mem_size;
+                    }
+                    if(n == 1){
+                        ptr_tmp = (mem_block *)(MEM_START + BLK_SIZE*i);
+                    }
+                    move_size += old_size;
+                    char *dst_addr = ptr_tmp->mem_ptr - offset;
+                    char *src_addr = ptr_tmp->mem_ptr;
+                    for(j=0; j<move_size; j++){
+                        *dst_addr++ = *src_addr++;
+                    }
+                    for(j=0; j<n; j++){
+                        ptr_tmp = (mem_block *)(MEM_START + BLK_SIZE*(i+j));
+                        ptr_tmp->mem_ptr -= offset;
+                        if(j == 0){
+                            ptr_tmp->mem_size = msize;
+                        }
+                    }
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
 void *mem_buffer(int id)
 {
     int i = 0;
@@ -96,7 +165,7 @@ void *mem_buffer(int id)
     return NULL;
 }
 
-void mem_free(int id)
+int mem_free(int id)
 {
     int i=0;
     
@@ -147,4 +216,6 @@ void mem_free(int id)
             break; 
         }
     }
+    
+    return 0;
 }

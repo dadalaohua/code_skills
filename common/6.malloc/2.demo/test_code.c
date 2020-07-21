@@ -33,6 +33,20 @@ void test_buffer(int i, int size)
     }
 }
 
+void test_realloc(int i, int size)
+{
+    printf("------test_realloc-------\n");
+    printf("i=%d, id = %d, size=%d\n", i, mem_id[i], size);
+    int ret = mem_realloc(mem_id[i], size);
+    if(ret){
+        char *p = mem_buffer(mem_id[i]);
+        memset(p, 0xa0+i, size);
+        print_mem_hex(MEM_SIZE);
+    }else{
+        printf("test_realloc---fail\n");
+    }
+}
+
 void test_free(int id)
 {
     printf("------test_free-------\n");
@@ -42,24 +56,45 @@ void test_free(int id)
 }
 
 int main(int argc, char* argv[])
-{ 
+{
+    int i;
+    
     print_mem_info();
     test_malloc(1, 10);
     test_malloc(2, 8);
     test_malloc(3, 20);
+    
     test_free(2);
+    
     test_malloc(4, 10);
+    
     test_free(1);
+    
     test_malloc(5, 20);
     test_malloc(6, 10);
     test_malloc(7, 10);
+    
     test_free(6);
+    
     test_malloc(8, 13);
     test_buffer(5, 20);
+    
     test_free(4);
+    
     test_buffer(3, 20);
+    
     test_malloc(9, 15);
     test_malloc(10, 15);
+    
+    test_realloc(3, 10);
+    test_realloc(8, 15);
+    test_realloc(5, 30);
+    test_realloc(8, 20);
+    test_realloc(9, 20);
+    test_realloc(9, 13);
+    
+    for(i = 0; i<10; i++)
+        test_free(i);
      
     return 0;
 }
