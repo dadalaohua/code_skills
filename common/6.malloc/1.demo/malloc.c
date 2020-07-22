@@ -38,6 +38,28 @@ void mymemset(void *s, unsigned char c, unsigned int count)
         *xs++ = c;
 }
 
+//计算分配的大小
+//ptr:内存首地址 
+unsigned int mem_offset(void *ptr)
+{  
+    unsigned int offset;
+    
+    if(ptr == NULL)
+        return 0;//地址为0.
+    
+    offset = (unsigned int)ptr - (unsigned int)&mallco_dev.membase;  
+    
+    if(offset < MAX_MEM_SIZE)//偏移在内存池内. 
+    {  
+        int index = offset / MEM_BLOCK_SIZE;    //偏移所在内存块号码
+        int nmemb = mallco_dev.memmap[index];   //内存块数量
+        
+        return nmemb * MEM_BLOCK_SIZE;  
+    }
+    else
+        return 0;//偏移超区了.    
+}
+
 //内存管理初始化  
 void mem_init(void)  
 {  
@@ -58,7 +80,7 @@ unsigned char mem_perused(void)
             used++; 
     }
     
-    return used*100/MEM_ALLOC_TABLE_SIZE;  
+    return (used * 100 / (MEM_ALLOC_TABLE_SIZE));  
 }
 
 //内存分配(内部调用)
@@ -68,7 +90,7 @@ unsigned int mem_malloc(unsigned int size)
 {  
     signed long offset = 0;
     unsigned short nmemb; //需要的内存块数  
-    unsigned short cmemb=0;//连续空内存块数
+    unsigned short cmemb = 0;//连续空内存块数
     unsigned int i;
     
     if(!mallco_dev.memrdy)
@@ -78,7 +100,7 @@ unsigned int mem_malloc(unsigned int size)
         return 0XFFFFFFFF;//不需要分配
     
     nmemb = size/MEM_BLOCK_SIZE;   //获取需要分配的连续内存块数
-    if(size%MEM_BLOCK_SIZE)
+    if(size % MEM_BLOCK_SIZE)
         nmemb++;
     
     for(offset = MEM_ALLOC_TABLE_SIZE - 1; offset >= 0; offset--)//搜索整个内存控制区  
@@ -88,14 +110,14 @@ unsigned int mem_malloc(unsigned int size)
         else
             cmemb = 0;       //连续内存块清零
         
-        if(cmemb==nmemb)      //找到了连续nmemb个空内存块
+        if(cmemb == nmemb)      //找到了连续nmemb个空内存块
         {
-            for(i=0;i<nmemb;i++)      //标注内存块非空 
+            for(i = 0; i < nmemb; i++)      //标注内存块非空 
             {  
-                mallco_dev.memmap[offset+i]=nmemb;  
+                mallco_dev.memmap[offset + i] = nmemb;  
             }
             
-            return (offset*MEM_BLOCK_SIZE);//返回偏移地址  
+            return (offset * MEM_BLOCK_SIZE);//返回偏移地址  
         }
     }
     
@@ -115,20 +137,20 @@ unsigned char mem_free(unsigned int offset)
         return 1;//未初始化
     }
     
-    if(offset<MAX_MEM_SIZE)//偏移在内存池内. 
+    if(offset < MAX_MEM_SIZE)//偏移在内存池内. 
     {  
-        int index = offset/MEM_BLOCK_SIZE;//偏移所在内存块号码
+        int index = offset / MEM_BLOCK_SIZE;    //偏移所在内存块号码
         int nmemb = mallco_dev.memmap[index];   //内存块数量
         
         for(i = 0;i < nmemb; i++)     //内存块清零
         {  
-            mallco_dev.memmap[index+i]=0;  
+            mallco_dev.memmap[index+i] = 0;  
         }
         
         return 0;  
     }
     else
-        return 2;//偏移超区了.  
+        return 2;//偏移超区了.
 }
 
 //释放内存(外部调用) 
@@ -140,7 +162,7 @@ void myfree(void *ptr)
     if(ptr == NULL)
         return;//地址为0.
     
-    offset=(unsigned int)ptr-(unsigned int)&mallco_dev.membase;  
+    offset = (unsigned int)ptr - (unsigned int)&mallco_dev.membase;  
     mem_free(offset);//释放内存     
 }
 
@@ -166,15 +188,28 @@ void *mymalloc(unsigned int size)
 void *myrealloc(void *ptr,unsigned int size)  
 {  
     unsigned int offset;
+    unsigned int ptr_size;
     
     offset = mem_malloc(size);
     
     if(offset == 0XFFFFFFFF)
-        return NULL;     
+    {
+        if(size == 0)
+            myfree(ptr);
+
+        return NULL;
+    }
     else  
-    {  
-        mymemcpy((void*)((unsigned int)&mallco_dev.membase+offset),ptr,size);//拷贝旧内存内容到新内存   
+    {
+        ptr_size = mem_offset(ptr);//原先分配的大小
+        
+        if(ptr_size < size)//如果原先分配的大小小于新分配大小，则只拷贝原先分配的大小的数据，避免内存越界
+            mymemcpy((void*)((unsigned int)&mallco_dev.membase + offset), ptr, ptr_size);//拷贝旧内存内容到新内存   
+        else
+            mymemcpy((void*)((unsigned int)&mallco_dev.membase + offset), ptr, size);//拷贝旧内存内容到新内存
+        
         myfree(ptr);               //释放旧内存
-        return (void*)((unsigned int)&mallco_dev.membase+offset);          //返回新内存首地址
+        
+        return (void*)((unsigned int)&mallco_dev.membase + offset);          //返回新内存首地址
     }  
 } 
