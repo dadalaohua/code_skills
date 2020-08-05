@@ -1,0 +1,1 @@
+bit反转 从msb-lsb到lsb-msb
