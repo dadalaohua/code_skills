@@ -57,8 +57,6 @@ unsigned int count_bit1_4(unsigned int data)
 {
     return (ones[data & 0xff] + ones[(data >> 8) & 0xff] + ones[(data >> 16) & 0xff]\
     + ones[(data >> 24) & 0xff]);
-
-    return data;
 }
 
 int main(int argc, char* argv[])

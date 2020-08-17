@@ -53,9 +53,7 @@ unsigned int count_bit1_3(unsigned char data)
 
 unsigned int count_bit1_4(unsigned char data)
 {
-    return (ones[data & 0xff]);
-
-    return data;
+    return (ones[data]);
 }
 
 int main(int argc, char* argv[])
