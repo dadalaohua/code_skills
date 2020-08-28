@@ -68,7 +68,6 @@ const unsigned int crc_table[256] = {
 //查表法计算crc
 unsigned int do_crc_table(unsigned char *ptr, int len)
 {
-    unsigned char data;
     unsigned int crc = CRC_INIT;
     
     while(len--) 
