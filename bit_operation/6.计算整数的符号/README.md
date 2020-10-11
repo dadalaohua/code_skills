@@ -2,36 +2,49 @@
 
 ## 计算一个整数的符号(是+或者-) 
 ```
-int v;      // 待检测的数
-int sign;   // 符号结果，0表示正数或者0，-1表示负数
+int v;      // we want to find the sign of v
+            // 我们希望得出v的符号（正负）
+int sign;   // the result goes here
+            // 结果保存在这个变量里
 
-// CHAR_BIT 是一个字节的位数 (通常是8).
-sign = -(v < 0);  // if v < 0 then -1, else 0. 
-// 或者避免使用CPU判断，因为那会增加cost:
+// CHAR_BIT is the number of bits per byte (normally 8).
+// 常量CHAR_BIT指是一个比特里包含多少位（通常情况下是8位）
+sign = -(v < 0);  // if v < 0 then -1, else 0.
+// or, to avoid branching on CPUs with flag registers (IA32):
+// 或者，为了防止在有标志寄存器的CPU(Intel32位X86架构)上出现分支指令
 sign = -(int)((unsigned int)((int)v) >> (sizeof(int) * CHAR_BIT - 1));
-// 或者更少的运算:
-sign = v >> (sizeof(int) * CHAR_BIT - 1); 
+// or, for one less instruction (but not portable):
+// 或者，牺牲移植性来减少一个指令
+sign = v >> (sizeof(int) * CHAR_BIT - 1);
 ```
-更多的人喜欢用-1表示复数，+1表示正数或者0，那么我们可以用: 
+对于32位整型数来说，上面的最后一条语句会计算`sign=v>>31`。这样的方式比`sign=-(v<0)`这种直接的方式要快一次运算左右。由于右移时，最左端的符号位会被填充到多出来的位中，所以在这个技巧（指v>>31）能够工作。如果最左端的符号位是1，那么结果就是-1；否则就是0。因为右移时，负数的所有位都会被填充为1，而二进制位全1正好是是-1的补码。不过不幸的是，这个操作是依赖底层实现的（所以是说牺牲了移植性）。
+
+也许你可能更喜欢，对于正数返回1，对于负数返回-1，那么有：
+
 ```
 sign = +1 | (v >> (sizeof(int) * CHAR_BIT - 1));  // if v < 0 then -1, else +1
 ```
-另外用-1，0，+1分别表示负数，0，正数的方法有: 
+更或者，还有对于负数零正数而返回-1, 0, 1的方案，那么有：
 ```
 sign = (v != 0) | -(int)((unsigned int)((int)v) >> (sizeof(int) * CHAR_BIT - 1));
-```
-//或者更快一点的方法，但移植性差:
-```
+// Or, for more speed but less portability:
+// 或者，牺牲移植性来提升速度
 sign = (v != 0) | (v >> (sizeof(int) * CHAR_BIT - 1));  // -1, 0, or +1
-```
-//或者更简洁，移植性高和速度快的方法是:
-```
+// Or, for portability, brevity, and (perhaps) speed:
+// 或者，更易移植，更加简洁，或者(有可能)更快的方案
 sign = (v > 0) - (v < 0); // -1, 0, or +1
 ```
-如果你想知道一个数是不是非负数，结果是1(非负)否则0(负数),那么可以用: 
+反之，如果你希望对于负数返回0，非负数返回+1，那么有：
 ```
 sign = 1 ^ ((unsigned int)v >> (sizeof(int) * CHAR_BIT - 1)); // if v < 0 then 0, else 1
 ```
+附加说明：
+2003年3月7日，Augus Duggan指出1989 ANSI C标准指明带符号数右移的结构是由编译器实现时定义(implementation-defined)的，所以这个技巧有可能不会正常工作。
+2005年9月28日，Toby Speight为了提高移植性，他提议使用CHAR_BIT常量表示比特的长度，而不是简单地假设比特长度是8位。
+
+2006年3月4日，Augus提出了几种更具移植性的代码版本，包括类型转换。
+
+2009年9月12日，[Rohit Gary](http://rpg-314.blogspot.com/)提出了集中支持非负数的代码版本。
 
 ***
 

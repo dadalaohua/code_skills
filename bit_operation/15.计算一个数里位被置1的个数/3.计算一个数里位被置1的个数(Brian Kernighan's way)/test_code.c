@@ -6,7 +6,20 @@
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-
+unsigned int count_bit1(unsigned int v)
+{
+    //unsigned int v; // count the number of bits set in v
+    //                // 计算变量v的二进制中1的个数
+    unsigned int c; // c accumulates the total bits set in v
+                    // 保存计算的结果
+    for (c = 0; v; c++)
+    {
+        v &= v - 1; // clear the least significant bit set
+                    // 清除掉从最低位到最高位数的第一个为1的位
+    }
+    
+    return c;
+}
 
 /************************************************************************/
 /*                                                                      */
@@ -14,6 +27,9 @@
 
 int main(int argc, char* argv[])
 {
+    unsigned int test = 0x5134684B;
+    
+    printf("count_bit1: %d\n", count_bit1(test));
     
     return 0;
 }

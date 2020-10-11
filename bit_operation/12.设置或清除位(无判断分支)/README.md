@@ -1,17 +1,23 @@
 # 设置或清除位(无判断分支) 
 
-## 设置或清除位(无判断分支)
 ```
-bool f;         // 条件flag
-unsigned int m; // 位掩码
-unsigned int w; // 需要被修改的数:  if (f) w |= m; else w &= ~m; 
- 
+bool f;         // conditional flag
+                // 使用这个标志来表示条件判断
+unsigned int m; // the bit mask
+                // 位掩码
+unsigned int w; // the word to modify:  if (f) w |= m; else w &= ~m;
+                // 需要进行操作的变量
+
 w ^= (-f ^ w) & m;
- 
-// 或者:
+
+// OR, for superscalar CPUs:
+// 在一些超标量架构的CPU上，也可以这样:
 w = (w & ~m) | (-f & m);
 ```
-因为有些cpu的系统架构使用if分支判断时会使用多次操作。例如：非正式的测试中AMD Athlon XP 2100+显示出使用上述方法比用if快5-10%, Intel Core 2 Duo 则是快16%。
+在某些架构上，不使用分支指令会比使用分支指令多出2个甚至更多的操作。举个例子，通过非正式速度测试表明，AMD Athlon™ XP 2100+能快5-10%； Intel Core 2 Duo的超标量版本能比能比前一个快16%。 
+ 2003年12月11日，Gelnn Slayden告诉了我第一个算法。 
+ 2007年4月3日，Marco Yu给我分享了超标量版本的算法，在两天后给我提出了一处显示排版错误。
+
 ***
 
 ### Conditionally set or clear bits without branching
