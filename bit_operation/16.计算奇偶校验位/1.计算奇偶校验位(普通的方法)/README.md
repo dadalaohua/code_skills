@@ -1,10 +1,10 @@
-# 计算奇偶校验位(普通的方法) 
-
+# 计算奇偶性(普通的方法) 
+如果设置了奇数位数，则为1，否则为0
 ```
 unsigned int v;       // word value to compute the parity of
-                      // 需要计算的值保存在变量v中
+                      // 计算奇偶性的数值
 bool parity = false;  // parity will be the parity of v
-                      // 变量parity保存v的奇偶校验位
+                      // 变量parity保存v的奇偶性
 while (v)
 {
   parity = !parity;
@@ -15,7 +15,7 @@ while (v)
 ***
 
 ### Computing parity the naive way
-
+(1 if an odd number of bits set, 0 otherwise) 
 ```
 unsigned int v;       // word value to compute the parity of
 bool parity = false;  // parity will be the parity of v
