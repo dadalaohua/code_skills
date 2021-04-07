@@ -10,7 +10,7 @@ int const mask = v >> sizeof(int) * CHAR_BIT - 1;
 
 r = (v + mask) ^ mask;
 ```
-一个简单的变形:
+专利的变化:
 ```
 r = (v ^ mask) - mask;
 ```

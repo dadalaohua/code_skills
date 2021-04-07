@@ -1,23 +1,43 @@
 #include <stdio.h>
-#include <stdbool.h>
 
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-bool opposite_signs(int x, int y)
+
+
+/************************************************************************/
+/*                                                                      */
+/************************************************************************/
+const float error = 1e-5;
+
+float NewtonSqrt(const float num)
 {
-    return ((x ^ y) < 0);
+    if (num < 0)
+    {
+        return -1;
+    }
+    else
+    {
+        float x = num;
+        // 如果原值减去近似根的平方大于误差，继续循环
+        while (fabs(num - x * x) >= error)
+        {
+            // 得到下一个近似根
+            x = (x + num / x) / 2.0;
+        }
+        return x;
+    }
 }
-
-/************************************************************************/
-/*                                                                      */
-/************************************************************************/
 
 int main(int argc, char* argv[])
 {
-    printf("%d and %d %s opposite signs\n", 5, -100, opposite_signs(5, -100) ? "have" : "haven't");
+    float i;
     
-    printf("%d and %d %s opposite signs\n", 546, 34600, opposite_signs(546, 34600) ? "have" : "haven't");
+    for(i = 0; i < 20; i++)
+    {
+        printf("%f: %f\n", i, NewtonSqrt(i));
+        printf("%f: %f\n", i, sqrt(i));
+    }
     
     return 0;
 }
