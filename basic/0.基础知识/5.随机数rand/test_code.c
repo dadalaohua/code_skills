@@ -59,6 +59,15 @@ double rand1(void)
 }
 
 /****************************/
+/*     rand_range()函数     */
+/*返回min～max的随机函数    */
+/****************************/
+int rand_range(int min, int max)
+{
+    return rand()%(max - min + 1) + min;
+}
+
+/****************************/
 
 int main(int argc, char* argv[])
 {
@@ -108,6 +117,12 @@ int main(int argc, char* argv[])
     for (i = 0; i < 10; i++)
     {
         printf("%f ", rand1());
+    }
+    printf("\n");
+    
+    for (i = 0; i < 10; i++)
+    {
+        printf("%u ", rand_range(21, 35));
     }
     printf("\n");
     
