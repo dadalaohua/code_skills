@@ -38,6 +38,7 @@ int test_function(void)
 int main(int argc, char* argv[])
 {
     int i;
+    int (*test)(void);
     
     //typecheck(char, i);   //类型错误，会在编译时提示警告或出错
     typecheck(int, i);
@@ -45,6 +46,8 @@ int main(int argc, char* argv[])
     //typecheck_fn(char (*)(void), test_function);  //类型错误，会在编译时提示警告或出错
     //typecheck_fn(int (*)(int), test_function);    //类型错误，会在编译时提示警告或出错
     typecheck_fn(int (*)(void), test_function);
+    
+    typecheck_fn(test, test_function);
     
     return 0;
 }
