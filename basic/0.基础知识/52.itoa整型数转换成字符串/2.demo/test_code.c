@@ -12,42 +12,38 @@ char *itoa( int value, char *string,int radix);
 原型说明：
 value：欲转换的数据。
 string：目标字符串的地址。
-radix：转换后的进制数，可以是10进制、16进制等
+radix：转换后的进制数，只支持10进制以下，如2进制，8进制，10进制，不支持16进制
 ************************************************************************/
-char *itoa(int val, char *buf, unsigned radix)
+int itoa(long long value, char *s, unsigned radix)
 {
-    char        *p;
-    char        *firstdig;
-    char        temp;
-    unsigned    digval;
+    char *p, aux;
+    unsigned long long v;
+    size_t l;
 
-    p = buf;
-    if(val <0)
-    {
-        *p++ = '-';
-        val = (unsigned long)(-(long)val);
+    /* Generate the string representation, this method produces
+     * an reversed string. */
+    v = (value < 0) ? -value : value;
+    p = s;
+    do {
+        *p++ = '0' + (v % radix);
+        v /= radix;
+    } while (v);
+    if (value < 0) *p++ = '-';
+
+    /* Compute length and add null term. */
+    l = p - s;
+    *p = '\0';
+
+    /* Reverse the string. */
+    p--;
+    while (s < p) {
+        aux = *s;
+        *s = *p;
+        *p = aux;
+        s++;
+        p--;
     }
-    firstdig = p; 
-    do{
-        digval = (unsigned)(val % radix);
-        val /= radix;
-        
-        if  (digval > 9)
-            *p++ = (char)(digval - 10 + 'a');
-        else
-            *p++ = (char)(digval + '0');
-    }while(val > 0);
-
-    *p-- = '\0';
-    do{
-        temp = *p;
-        *p = *firstdig;
-        *firstdig = temp;
-        --p;
-        ++firstdig;
-    }while(firstdig < p);
-
-    return buf;
+    return l;
 }
 
 /************************************************************************/
@@ -61,8 +57,8 @@ int main(int argc, char* argv[])
 
     itoa(val, str, 10);
     printf("val %d decimal: %s\n", val, str);
-    itoa(val, str, 16);
-    printf("val %d hexadecimal: %s\n", val, str);
+    // itoa(val, str, 16);
+    // printf("val %d hexadecimal: %s\n", val, str);//不支持
     itoa(val, str, 2);
     printf("val %d binary: %s\n", val, str);
     itoa(val, str, 8);
