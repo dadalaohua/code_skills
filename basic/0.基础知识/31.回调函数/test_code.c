@@ -31,5 +31,9 @@ int main(int argc, char* argv[])
     
     printf("return data:%d\n",ret);
     
+    ret = double_data(50, myfun);
+    
+    printf("return data:%d\n",ret);
+    
     return 0;
 }
