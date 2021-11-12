@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
-#include <spawn.h>
 
+#include "testhead.h"
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
+testhead_t* test_head;
 
 /************************************************************************/
 /*                                                                      */
@@ -13,18 +15,11 @@
 
 int main(int argc, char* argv[])
 {
-    pid_t  nPid;
-    posix_spawnattr_t attr;  
-    posix_spawn_file_actions_t file_actions;
-    char* arg[] = {"/bin/ps", "-lf", NULL};
-    char* envp[] = {"PROCESS=2"};
-  
-    posix_spawnattr_init(&attr);
-    posix_spawn_file_actions_init(&file_actions);
-  
-    posix_spawn(&nPid, "/bin/ps", &file_actions, &attr, arg, envp);
-
-    printf("spawned PID %d\n", nPid);
+    test_head = testhead_malloc();
     
+    testhead_set_val(test_head, 1);
+    
+    printf("%d\n", testhead_get_val(test_head));
+    //printf("%d\n", test_head->val); //未知
     return 0;
 }

@@ -1,30 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <spawn.h>
 
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
+//环境变量被保存在了全局变量 __environ，通过这个变量来读取环境变量信息
+extern char ** _environ;
 
-/************************************************************************/
-/*                                                                      */
-/************************************************************************/
-
-int main(int argc, char* argv[])
+void get_all_env(void)
 {
-    pid_t  nPid;
-    posix_spawnattr_t attr;  
-    posix_spawn_file_actions_t file_actions;
-    char* arg[] = {"/bin/ps", "-lf", NULL};
-    char* envp[] = {"PROCESS=2"};
-  
-    posix_spawnattr_init(&attr);
-    posix_spawn_file_actions_init(&file_actions);
-  
-    posix_spawn(&nPid, "/bin/ps", &file_actions, &attr, arg, envp);
-
-    printf("spawned PID %d\n", nPid);
+    char **p = _environ;
+    while(*p) {
+        printf("%s\n", *p);
+        p++;
+    }
+}
+/************************************************************************/
+/*                                                                      */
+/************************************************************************/
+int main(int argc, char* argv[], char* envp[])
+{
+    //方法一：在C API级别，环境变量作为第三个参数传递给main。
+    while( *envp ) {
+        printf("%s\n", *envp);
+        envp++;
+    }
+    
+    //方法二：全局变量 __environ
+    get_all_env();
     
     return 0;
 }
