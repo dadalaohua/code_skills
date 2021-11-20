@@ -1,6 +1,5 @@
 ./test_code signo pid
 
-АэИз:
+дѕ‹е¦‚:
 ./test_code 10 23811
-
 
