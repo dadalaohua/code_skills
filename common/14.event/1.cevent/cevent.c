@@ -36,18 +36,18 @@ void ceventInit(void)
 {
 #if defined(__CC_ARM) || (defined(__ARMCC_VERSION) && __ARMCC_VERSION >= 6000000)
     ceventTable.base = (CEvent *)(&cEvent$$Base);
-    ceventTable.count = ((unsigned int)(&cEvent$$Limit)
-                            - (unsigned int)(&cEvent$$Base))
+    ceventTable.count = ((size_t)(&cEvent$$Limit)
+                            - (size_t)(&cEvent$$Base))
                             / sizeof(CEvent);
 #elif defined(__ICCARM__) || defined(__ICCRX__)
     ceventTable.base = (CEvent *)(__section_begin("cEvent"));
-    ceventTable.count = ((unsigned int)(__section_end("cEvent"))
-                            - (unsigned int)(__section_begin("cEvent")))
+    ceventTable.count = ((size_t)(__section_end("cEvent"))
+                            - (size_t)(__section_begin("cEvent")))
                             / sizeof(CEvent);
 #elif defined(__GNUC__)
     ceventTable.base = (CEvent *)(&_cevent_start);
-    ceventTable.count = ((unsigned int)(&_cevent_end)
-                            - (unsigned int)(&_cevent_start))
+    ceventTable.count = ((size_t)(&_cevent_end)
+                            - (size_t)(&_cevent_start))
                             / sizeof(CEvent);
 #else
     #error not supported compiler, please use command table mode
