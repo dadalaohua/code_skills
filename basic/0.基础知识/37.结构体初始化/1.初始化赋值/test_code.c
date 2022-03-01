@@ -102,12 +102,28 @@ void test_init_4(void)
     printf("\n");
 }
 
+//方法五
+void test_init_5(void)
+{
+    struct member testnum;
+    testnum = (struct member){682, 65, 5.141592, "hello world!", {1, 2, 3}, {.val = 8}};
+    
+    printf("testnum.int_num         %d\n", testnum.int_num);
+    printf("testnum.char_num        %d\n", testnum.char_num);
+    printf("testnum.float_num       %f\n", testnum.float_num);
+    printf("testnum.string          %s\n", testnum.string);
+    printf("testnum.buf             %d %d %d\n", testnum.buf[0], testnum.buf[1], testnum.buf[2]);
+    printf("testnum.struct_num.val  %d\n", testnum.struct_num.val);
+    printf("\n");
+}
+
 int main(int argc, char* argv[])
 {
     test_init_1();
     test_init_2();
     test_init_3();
     test_init_4();
+    test_init_5();
     
     return 0;
 }
