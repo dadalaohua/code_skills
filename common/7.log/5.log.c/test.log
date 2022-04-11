@@ -1,0 +1,3 @@
+2022-03-19 14:48:56 WARN  test_code.c:117: hello world 666
+2022-03-19 14:48:56 ERROR test_code.c:118: hello world 666
+2022-03-19 14:48:56 FATAL test_code.c:119: hello world 666
