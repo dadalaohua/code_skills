@@ -153,6 +153,24 @@ size_t DJB2Hash(char *str)
 }
 
 /*
+http://www.cse.yorku.ca/~oz/hash.html
+this algorithm (k=33) was first reported by dan bernstein many years ago in comp.lang.c. another version 
+of this algorithm (now favored by bernstein) uses xor: hash(i) = hash(i - 1) * 33 ^ str[i]; 
+the magic of number 33 (why it works better than many other constants, prime or not) has never been adequately explained.
+*/
+/*和上面的DJBHash一模一样*/
+// unsigned long DJB2Hash_2(unsigned char *str)
+// {
+    // unsigned long hash = 5381;
+    // int c;
+
+    // while (c = *str++)
+        // hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+
+    // return hash;
+// }
+
+/*
  *  @brief  PJW Hash Function
  *  @detail 本算法是基于AT&T贝尔实验室的Peter J. Weinberger的论文而发明的一种hash算法。
  */
@@ -201,6 +219,28 @@ size_t ELFHash(char *str)
     return hash;
 }
 
+/*
+http://www.cse.yorku.ca/~oz/hash.html
+lose lose
+This hash function appeared in K&R (1st ed) but at least the reader was 
+warned: "This is not the best possible algorithm, but it has the merit 
+of extreme simplicity." This is an understatement; It is a terrible 
+hashing algorithm, and it could have been much better without sacrificing 
+its "extreme simplicity." [see the second edition!] Many C programmers  use 
+this function without actually testing it, or checking something like Knuth's 
+Sorting and Searching, so it stuck. It is now found mixed with otherwise 
+respectable code, eg. cnews. sigh.
+*/
+/* unsigned long lose_lose_hash(unsigned char *str)
+{
+    unsigned int hash = 0;
+    int c;
+
+    while (c = *str++)
+        hash += c;
+
+    return hash;
+} */
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
@@ -218,7 +258,9 @@ int main(int argc, char* argv[])
     printf("FNVHash %lu\n", FNVHash(buf));
     printf("DJBHash %lu\n", DJBHash(buf));
     printf("DJB2Hash %lu\n", DJB2Hash(buf));
+    //printf("DJB2Hash_2 %lu\n", DJB2Hash_2((unsigned char *)buf));
     printf("PJWHash %lu\n", PJWHash(buf));
     printf("ELFHash %lu\n", ELFHash(buf));
+    //printf("lose_lose_hash %lu\n", lose_lose_hash((unsigned char *)buf));
     return 0;
 }
