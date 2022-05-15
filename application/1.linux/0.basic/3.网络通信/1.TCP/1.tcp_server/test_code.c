@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <errno.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -10,7 +12,8 @@ int main(int argc, char* argv[])
     int sockfd, new_fd;
     struct sockaddr_in server_addr;
     struct sockaddr_in client_addr;
-    int sin_size, iDataNum;
+    socklen_t sin_size;
+    int iDataNum;
     char buffer[4096];
     int portnumber = 8080;
 
@@ -55,7 +58,6 @@ int main(int argc, char* argv[])
     
     sin_size = sizeof(struct sockaddr_in);
     
-
     //等待并接受客户请求
     if((new_fd = accept(sockfd, (struct sockaddr *)(&client_addr), &sin_size)) == -1)
     {
