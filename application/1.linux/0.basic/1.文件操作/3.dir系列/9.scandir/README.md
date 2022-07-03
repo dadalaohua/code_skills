@@ -159,7 +159,7 @@ Since glibc 2.1, alphasort() calls strcoll(3); earlier it used strcmp(3).
 
 Before glibc 2.10, the two arguments of `alphasort()` and `versionsort()` were typed as `const void *`.  When `alphasort()` was standardized in POSIX.1-2008, the argument type was specified as the type-safe `const struct dirent **`, and glibc 2.10 changed the definition of `alphasort()` (and the nonstandard `versionsort()`) to match the standard.
 
-在glibc 2.10之前，`alphasort()`和`versionsort()`的两个参数被打成`const void *`。 当`alphasort()`在POSIX.1-2008中被标准化时，参数类型被指定为类型安全的`const struct dirent **`，glibc 2.10改变了`alphasort()`（和非标准的`versionsort()`）的定义以符合标准。
+在glibc 2.10之前，`alphasort()`和`versionsort()`的两个参数的类型为`const void *`。 当`alphasort()`在POSIX.1-2008中被标准化时，参数类型被指定为类型安全的`const struct dirent **`，glibc 2.10改变了`alphasort()`（和非标准的`versionsort()`）的定义以符合标准。
 
 ## EXAMPLES
 

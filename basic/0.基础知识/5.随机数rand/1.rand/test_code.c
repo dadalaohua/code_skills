@@ -63,6 +63,31 @@ double rand1(void)
 }
 
 /****************************/
+/*     rand5()函数          */
+/*返回0～5的实数的随机函数  */
+/*范围[0, 5]                */
+/****************************/
+double rand5(void)
+{
+    return (double)rand() * 5 / RAND_MAX;
+}
+
+/*******************************/
+/*     rand_f_range()函数      */
+/*返回min～max的实数的随机函数 */
+/*范围[min, max]               */
+/*******************************/
+double rand_f_range(int min, int max)
+{
+    return (double)rand() * (max - min) / RAND_MAX + min;
+}
+
+double rand_f_range_2(double min, double max)
+{
+    return (double)rand() * (max - min) / RAND_MAX + min;
+}
+
+/****************************/
 /*     rand_range()函数     */
 /*返回min～max的随机函数    */
 /****************************/
@@ -72,16 +97,49 @@ int rand_range(int min, int max)
     return rand()%(max - min + 1) + min;
 }
 
+int rand_range2(int min, int max)
+{
+    int rnd ;
+
+    /*去除随机数的最大值*/
+    while(( rnd = rand() ) == RAND_MAX) ;
+    /*随机数的计算*/ 
+    
+    return (int)((double)rnd / RAND_MAX * (max - min + 1) + min);
+}
+
 /*范围[min, max)            */
 int rand_range_2(int min, int max)
 {
     return rand()%(max - min) + min;
 }
 
+int rand_range2_2(int min, int max)
+{
+    int rnd ;
+
+    /*去除随机数的最大值*/
+    while(( rnd = rand() ) == RAND_MAX) ;
+    /*随机数的计算*/ 
+    
+    return (int)((double)rnd / RAND_MAX * (max - min) + min);
+}
+
 /*范围(min, max]            */
 int rand_range_3(int min, int max)
 {
     return rand()%(max - min) + min + 1;
+}
+
+int rand_range2_3(int min, int max)
+{
+    int rnd ;
+
+    /*去除随机数的最大值*/
+    while(( rnd = rand() ) == RAND_MAX) ;
+    /*随机数的计算*/ 
+    
+    return (int)((double)rnd / RAND_MAX * (max - min) + min  + 1);
 }
 
 /****************************/
@@ -137,8 +195,31 @@ int main(int argc, char* argv[])
     }
     printf("\n");
     
+    for (i = 0; i < 10; i++)
+    {
+        printf("%f ", rand5());
+    }
+    printf("\n");
+    
+    for (i = 0; i < 10; i++)
+    {
+        printf("%f ", rand_f_range(21, 35));
+    }
+    printf("\n");
+    
+    for (i = 0; i < 10; i++)
+    {
+        printf("%f ", rand_f_range_2(21.5, 21.9));
+    }
+    printf("\n");
+    
     for (i = 0; i < 10; i++) {
         printf("%u ", rand_range(21, 35));
+    }
+    printf("\n");
+    
+    for (i = 0; i < 10; i++) {
+        printf("%u ", rand_range2(21, 35));
     }
     printf("\n");
     
@@ -148,7 +229,17 @@ int main(int argc, char* argv[])
     printf("\n");
     
     for (i = 0; i < 10; i++) {
+        printf("%u ", rand_range2_2(21, 35));
+    }
+    printf("\n");
+    
+    for (i = 0; i < 10; i++) {
         printf("%u ", rand_range_3(21, 35));
+    }
+    printf("\n");
+    
+    for (i = 0; i < 10; i++) {
+        printf("%u ", rand_range2_3(21, 35));
     }
     printf("\n");
     
