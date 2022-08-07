@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 //共用体的特点是，使用类型最大的那个类型作为共用体的大小
 //所以，char b 使用的是 int a的空间大小，判断 b的值，也就是判断低地址的数据值。
@@ -38,6 +39,39 @@ int checkCPU_3(void)
     return 0;
 }
 
+//通过宏定义
+int checkCPU_4(void)  
+{  
+    if(__BYTE_ORDER == __LITTLE_ENDIAN)
+        return 1;//Little-endian
+    else
+        return 0;//Big-endian
+
+    return 0;
+}
+
+//通过宏定义2
+int checkCPU_5(void)  
+{  
+    if(__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+        return 1;//Little-endian
+    else
+        return 0;//Big-endian
+
+    return 0;
+}
+
+//通过宏定义3
+int checkCPU_6(void)  
+{  
+    if(BYTE_ORDER == LITTLE_ENDIAN)
+        return 1;//Little-endian
+    else
+        return 0;//Big-endian
+
+    return 0;
+}
+
 int main(int argc, char* argv[])
 { 
     if(checkCPU())  
@@ -51,6 +85,21 @@ int main(int argc, char* argv[])
         printf("Big endian\n");
     
     if(checkCPU_3())  
+        printf("Little endian\n"); 
+    else  
+        printf("Big endian\n");
+    
+    if(checkCPU_4())  
+        printf("Little endian\n"); 
+    else  
+        printf("Big endian\n");
+    
+    if(checkCPU_5())  
+        printf("Little endian\n"); 
+    else  
+        printf("Big endian\n"); 
+    
+    if(checkCPU_6())  
         printf("Little endian\n"); 
     else  
         printf("Big endian\n"); 

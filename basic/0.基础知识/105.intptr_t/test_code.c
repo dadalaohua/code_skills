@@ -1,35 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <stdint.h>
 
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-//��2Ϊ��ȡ��������log2(v)
-unsigned int bit_log2(unsigned int v)
-{
-    //unsigned int v; // 32-bit word to find the log base 2 of
-    unsigned int r = 0; // r will be lg(v)
-
-    while (v >>= 1) // unroll for more speed...
-    {
-        r++;
-    }
-    
-    return r;
-}
-
+/*
+    intptr_t 和uintptr_t 类型用来存放指针地址。
+    它们提供了一种可移植且安全的方法声明指针，而且和系统中使用的指针长度相同，
+    对于把指针转化成整数形式来说很有用。
+*/
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
 
 int main(int argc, char* argv[])
 {
-    int i;
-
-    for(i = 0; i < 65; i++)
-    {
-        printf("%d %d\n", i, bit_log2(i));
-    }
-    
+    int a = 88;
+    intptr_t ptr = (intptr_t)&a;
+    uintptr_t uptr = (uintptr_t)&a;
+    printf("0x%lx 0x%lx %p\n", ptr, uptr, &a);
     return 0;
 }

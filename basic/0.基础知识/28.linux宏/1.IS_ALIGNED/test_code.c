@@ -1,22 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-//以2为底取对数函数log2(v)
-unsigned int bit_log2(unsigned int v)
-{
-    //unsigned int v; // 32-bit word to find the log base 2 of
-    unsigned int r = 0; // r will be lg(v)
+/*
+    https://elixir.bootlin.com/linux/v3.10.108/source/include/linux/kernel.h
+*/
 
-    while (v >>= 1) // unroll for more speed...
-    {
-        r++;
-    }
-    
-    return r;
-}
+#define IS_ALIGNED(x, a)		(((x) & ((typeof(x))(a) - 1)) == 0)
 
 /************************************************************************/
 /*                                                                      */
@@ -24,12 +18,11 @@ unsigned int bit_log2(unsigned int v)
 
 int main(int argc, char* argv[])
 {
-    int i;
-
-    for(i = 0; i < 65; i++)
-    {
-        printf("%d %d\n", i, bit_log2(i));
-    }
-    
+    printf("%d\n", IS_ALIGNED(0x80000, 1 << 12));
+    // printf("%d\n", IS_ALIGNED(0x1000, 1 << 12));
+    // printf("%d\n", IS_ALIGNED(0x1002, 1 << 12));
+    printf("%d\n", IS_ALIGNED(512, 256));
+    //printf("%d\n", IS_ALIGNED(1024, 256));
+    printf("%d\n", IS_ALIGNED(500, 256));
     return 0;
 }
