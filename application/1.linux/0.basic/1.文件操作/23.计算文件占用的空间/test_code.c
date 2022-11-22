@@ -62,8 +62,11 @@ int read_dir_r(char *path) {
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
+//GB
 #define gigaByte (1 << 21)
+//MB
 #define megaByte (1 << 11)
+//KB 在Linux下 sta.st_blocks 总是 512 字节，所以要除以 2
 #define kiloByte (1 << 1)
 
 int main(int argc, char* argv[])

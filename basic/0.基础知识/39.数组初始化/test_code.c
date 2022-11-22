@@ -55,6 +55,16 @@ void test_init_4(void)
     printf("\n");
 }
 
+void test_init_9(void)
+{
+    int array[10] = {};
+    int i;
+    for(i = 0; i < sizeof(array)/sizeof(int); i++) {
+        printf("%d,", array[i]);
+    }
+    printf("\n");
+}
+
 void test_init_5(void)
 {
     int array[10];
@@ -115,5 +125,6 @@ int main(int argc, char* argv[])
     test_init_6();
     test_init_7();
     test_init_8();
+    test_init_9();
     return 0;
 }

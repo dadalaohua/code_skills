@@ -5,7 +5,7 @@
 /*                                                                      */
 /************************************************************************/
 //以2为底取对数函数log2(v)
-int bit_log2(unsigned int v)
+unsigned int bit_log2(unsigned int v)
 {
     //unsigned int v;  // 32-bit value to find the log2 of 
     const unsigned int b[] = {0x2, 0xC, 0xF0, 0xFF00, 0xFFFF0000};
@@ -25,7 +25,7 @@ int bit_log2(unsigned int v)
     return r;
 }
 
-int bit_log2_2(unsigned int v)
+unsigned int bit_log2_2(unsigned int v)
 {
     // OR (IF YOUR CPU BRANCHES SLOWLY):
 
@@ -44,7 +44,7 @@ int bit_log2_2(unsigned int v)
 
 //如果你知道 v 是 2 的幂，可以使用该方式
 //如果不是的话，会出错
-int bit_log2_3(unsigned int v)
+unsigned int bit_log2_3(unsigned int v)
 {
     // OR (IF YOU KNOW v IS A POWER OF 2):
 

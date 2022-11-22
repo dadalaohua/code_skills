@@ -5,14 +5,14 @@
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-#define BITARRAY_SHIFT  3
-#define BITARRAY_MASK   0x7
+#define BITARRAY_SHIFT  (3)
+#define BITARRAY_MASK   (0x7)
  
-#define BITARRAY_SIZE(size)             ((size >> BITARRAY_SHIFT) + 1)
-#define BITARRAY_BYTE_INDEX(num)        (num >> BITARRAY_SHIFT)
-#define BITARRAY_B_SET(array, num)        (array[BITARRAY_BYTE_INDEX(num)] |= (0x80 >> (num & BITARRAY_MASK)))
-#define BITARRAY_B_CLR(array, num)        (array[BITARRAY_BYTE_INDEX(num)] &= ~(0x80 >> (num & BITARRAY_MASK)))
-#define BITARRAY_B_IS_IN(array, num)      (array[BITARRAY_BYTE_INDEX(num)] & (0x80 >> (num & BITARRAY_MASK)))
+#define BITARRAY_SIZE(size)             (((size) >> BITARRAY_SHIFT) + 1)
+#define BITARRAY_BYTE_INDEX(num)        ((num) >> BITARRAY_SHIFT)
+#define BITARRAY_B_SET(array, num)      ((array)[BITARRAY_BYTE_INDEX(num)] |= (0x80 >> ((num) & BITARRAY_MASK)))
+#define BITARRAY_B_CLR(array, num)      ((array)[BITARRAY_BYTE_INDEX(num)] &= ~(0x80 >> ((num) & BITARRAY_MASK)))
+#define BITARRAY_B_IS_IN(array, num)    ((array)[BITARRAY_BYTE_INDEX(num)] & (0x80 >> ((num) & BITARRAY_MASK)))
 #define BITARRAY_BYTE_BIT_NUM(data)     ({ data = (data & 0x55) + ((data >> 1) & 0x55);\
                                            data = (data & 0x33) + ((data >> 2) & 0x33);\
                                            data = (data & 0x0f) + ((data >> 4) & 0x0f); })
@@ -20,7 +20,7 @@
                                                     for(i = 0; i < BITARRAY_SIZE(size); i++)\
                                                         count += BITARRAY_BYTE_BIT_NUM(array[i]);\
                                                         count;\
-                                                        })
+                                                 })
 
 /************************************************************************/
 /*                                                                      */

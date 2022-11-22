@@ -6,7 +6,7 @@
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-int bit_log10(unsigned int v)
+unsigned int bit_log10(unsigned int v)
 {
     //unsigned int v; // non-zero 32-bit integer value to compute the log base 10 of 
     int r;          // result goes here

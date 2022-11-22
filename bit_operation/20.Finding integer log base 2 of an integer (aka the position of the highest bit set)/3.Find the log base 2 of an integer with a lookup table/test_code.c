@@ -15,7 +15,7 @@ static const char LogTable256[256] =
 };
 
 //以2为底取对数函数log2(v)
-int bit_log2(int v)
+unsigned int bit_log2(unsigned int v)
 {
     //unsigned int v; // 32-bit word to find the log of
     unsigned r;     // r will be lg(v)
@@ -33,7 +33,7 @@ int bit_log2(int v)
     return r;
 }
 
-int bit_log2_2(int v)
+unsigned int bit_log2_2(unsigned int v)
 {
     //unsigned int v; // 32-bit word to find the log of
     unsigned r;     // r will be lg(v)
