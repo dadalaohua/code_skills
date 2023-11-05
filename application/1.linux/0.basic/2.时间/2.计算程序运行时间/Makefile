@@ -1,4 +1,4 @@
-test:test_code.o
+test:
 	gcc -o test_code test_code.c
 .PHONY:clean
 clean:

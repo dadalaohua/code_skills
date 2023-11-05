@@ -3,9 +3,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
@@ -26,6 +23,16 @@ int main(int argc, char* argv[])
     printf("writelen %d\n", writelen);
     
     int errlen = write(2, buf, readlen); // 2 标准错误
+    printf("errlen %d\n", errlen);
+    
+    
+    readlen = read(STDIN_FILENO, buf, 128);     // STDIN_FILENO 标准输入
+    printf("readlen %d, %s\n", readlen, buf);
+    
+    writelen = write(STDOUT_FILENO, buf, readlen); // STDOUT_FILENO 标准输出
+    printf("writelen %d\n", writelen);
+    
+    errlen = write(STDERR_FILENO, buf, readlen); // STDERR_FILENO 标准错误
     printf("errlen %d\n", errlen);
     
     return 0;
